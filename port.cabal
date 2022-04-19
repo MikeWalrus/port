@@ -1,0 +1,65 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           port
+version:        0.1.0.0
+synopsis:       Extract port definitions from Verilog.
+description:    Please see the README on GitHub at <https://github.com/mikewalrus/port#readme>
+homepage:       https://github.com/mikewalrus/port#readme
+bug-reports:    https://github.com/mikewalrus/port/issues
+author:         Liao Junxuan
+maintainer:     Liao Junxuan
+copyright:      2022 Liao Junxuan
+license:        GPL-3.0-or-later
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/mikewalrus/port
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_port
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , optparse-applicative >=0.16
+    , parsec ==3.*
+  default-language: Haskell2010
+
+executable port
+  main-is: Main.hs
+  other-modules:
+      Paths_port
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , optparse-applicative >=0.16
+    , parsec ==3.*
+    , port
+  default-language: Haskell2010
+
+test-suite port-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_port
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , optparse-applicative >=0.16
+    , parsec ==3.*
+    , port
+  default-language: Haskell2010
