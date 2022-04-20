@@ -3,10 +3,10 @@ module Main where
 import Lib
 import Options.Applicative
 
-data Args = Args Input OutputFormat
+data Args = Args OutputFormat Input
   deriving (Show)
 
-args = liftA2 Args input outputFormat
+args = liftA2 Args outputFormat input
 
 data Input
   = FileInput FilePath
@@ -16,7 +16,7 @@ data Input
 input = fileInput <|> stdInput
 
 fileInput :: Parser Input
-fileInput = FileInput <$> argument str (metavar "FILE")
+fileInput = FileInput <$> (argument str (metavar "FILE" <> action "file"))
 
 stdInput =
   flag'
@@ -24,7 +24,6 @@ stdInput =
     ( long "stdin"
         <> help "Read from stdin"
     )
-
 
 outputFormat =
   flag' Org (long "org")
@@ -44,7 +43,7 @@ opts =
 main :: IO ()
 main = execParser opts >>= run
 
-run (Args i o) = do
+run (Args o i) = do
   s <- r i
   putStr $ display $ map (formatTable o . toTable) <$> parseVerilog s
   where
