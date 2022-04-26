@@ -16,7 +16,7 @@ data Input
 input = fileInput <|> stdInput
 
 fileInput :: Parser Input
-fileInput = FileInput <$> (argument str (metavar "FILE" <> action "file"))
+fileInput = FileInput <$> argument str (metavar "FILE" <> action "file")
 
 stdInput =
   flag'
@@ -43,10 +43,10 @@ opts =
 main :: IO ()
 main = execParser opts >>= run
 
-run (Args o i) = do
-  s <- r i
-  putStr $ display $ map (formatTable o . toTable) <$> parseVerilog s
+run (Args o i) =
+  r i >>= parseAndPrint
   where
+    parseAndPrint s = putStr $ display $ map (formatTable o . toTable) <$> parseVerilog s
     r Stdin = getContents
     r (FileInput f) = readFile f
 

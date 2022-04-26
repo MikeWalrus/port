@@ -2,7 +2,7 @@ module Lib
   ( parseVerilog,
     toTable,
     formatTable,
-    OutputFormat(Latex, Md, Csv, Org)
+    OutputFormat (Latex, Md, Csv, Org),
   )
 where
 
@@ -90,14 +90,15 @@ data VModule = VModule String [Parameter] [Port]
 verilog = many vModule
 
 vModule =
-  vModuleDecl
-    <* manyTill (lexeme $ many (satisfy (not . isSpace))) (reserved "endmodule")
+  vModuleDecl <* manyTill anyToken (try $ reserved "endmodule")
 
 vModuleDecl :: GenParser Char st VModule
 vModuleDecl =
   liftM3
     VModule
-    (reserved "module" *> identifier)
+    ( manyTill anyToken (try $ reserved "module")
+        *> identifier
+    )
     (parameters <|> return [])
     (parens (commaSep portDecl) <* semi)
 
