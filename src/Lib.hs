@@ -132,6 +132,7 @@ portWidth = portWidthNotOne <|> return Nothing
 
 portDecl = do
   dir <- portDirection
+  try $ reserved "reg" <|> return ()
   width <- portWidth
   name <- identifier
   return Port {name = name, direction = dir, width = Width width}
