@@ -182,7 +182,7 @@ tableFormat Latex =
           ++ "\\begin{tabular}{lll}\n",
       lineBegin = "",
       lineEnd = "\\\\\n",
-      headerSep = "\\hline",
+      headerSep = "\\hline\n",
       fieldSep = " & ",
       footer =
         "\\end{tablular}\n"
