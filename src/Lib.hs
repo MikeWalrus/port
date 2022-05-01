@@ -62,6 +62,8 @@ semi = P.semi lexer
 
 commaSep = P.commaSep lexer
 
+comma = P.comma lexer
+
 data Direction = In | Out
   deriving (Show)
 
@@ -100,7 +102,7 @@ vModuleDecl =
         *> identifier
     )
     (parameters <|> return [])
-    (parens (commaSep portDecl) <* semi)
+    (parens (many portDecl) <* semi)
 
 parameters = op "#" *> parens (commaSep parameter)
 
@@ -134,8 +136,8 @@ portDecl = do
   dir <- portDirection
   try $ reserved "reg" <|> return ()
   width <- portWidth
-  name <- identifier
-  return Port {name = name, direction = dir, width = Width width}
+  name <- sepEndBy identifier comma
+  return Port {name = intercalate ", " name, direction = dir, width = Width width}
 
 data Table = Table String [String] [[String]]
   deriving (Show)
